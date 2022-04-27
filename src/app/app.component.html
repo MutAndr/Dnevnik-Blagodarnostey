@@ -1,0 +1,87 @@
+<div class="toolbar-container">
+  <mat-toolbar class="toolbar" color="primary">
+    <mat-icon aria-hidden="false" aria-label="check mark icon">view_headline</mat-icon>
+    <h1>Дневник благодарностей</h1>
+  </mat-toolbar>
+</div>
+
+<div class="add-form-container" *ngIf="adding || editing">
+  <mat-card>
+    <mat-card-title>Добавить благодарность </mat-card-title>
+    <hr />
+    <form [formGroup]="thankForm" (ngSubmit)="onSubmit()">
+      <mat-card-content>
+        <mat-form-field appearance="fill">
+          <mat-label>Кому или чему я благодарен?</mat-label>
+          <input matInput formControlName="name" />
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Что я чувствую?</mat-label>
+          <mat-select formControlName="feeling">
+            <mat-option value="Радость">Радость</mat-option>
+            <mat-option value="Вдохновение">Вдохновение</mat-option>
+            <mat-option value="Умиротворение">Умиротворение</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br />
+        <mat-form-field appearance="fill">
+          <mat-label>Что мне нравится?</mat-label>
+          <textarea
+            matInput
+            formControlName="pleasure"
+            placeholder=" "
+          ></textarea>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" type="submit">Добавить</button>
+        <button mat-raised-button (click)="exitForm()">Отмена</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>
+
+<div class="all-thanks" *ngIf="!adding && !editing">
+  <h1>Мои благодарности</h1>
+  <button mat-raised-button color="primary" (click)="adding = !adding">
+    Добавить новую
+  </button>
+  <div *ngFor="let thank of thanks; let i = index;">
+    <mat-card>
+      <mat-card-title>
+        <mat-icon
+          class="thank-icon"
+          color="primary"
+          aria-hidden="false"
+          aria-label="circle check mark icon"
+          >check_circle_outline</mat-icon
+        >
+        {{ thank.name }}
+      </mat-card-title>
+      <div class="detail-options">
+        <mat-icon
+          class="thank-icon"
+          color="primary"
+          (click)="setEditForm(thank, i)"
+          >edit</mat-icon
+        >
+        <mat-icon 
+          class="thank-icon" 
+          color="accent"
+          (click)="onDelete(i)"
+          >remove_circle</mat-icon
+        >
+      </div>            
+      <mat-card-content>
+        <p>
+          <span class="detail-label">Я чувствую:</span> {{ thank.feeling }}
+        </p>
+        <p>
+          <span class="detail-label">Что мне нравится:</span>
+          <br />{{ thank.pleasure }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
